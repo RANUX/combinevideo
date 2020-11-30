@@ -14,7 +14,7 @@ VIDEO_END_DIR = os.path.join(VIDEO_DIR, 'end')
 INTRO_IMAGE = os.path.join(IMAGES_DIR, 'intro.png')
 INTRO_AUDIO = os.path.join(AUDIO_DIR, 'intro.wav')
 
-WATERMARK_POS = { 'x': 1540, 'y': 1015 }
+WATERMARK_POS = { 'x': 1640, 'y': 1035 }
 
 CREATE_INTRO = True  # from image and audio file
 
