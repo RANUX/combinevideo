@@ -32,7 +32,7 @@ def join_video():
         ffmpeg
         .concat(*streams_av, v=1, a=1)
         .overlay(overlay_file, **WATERMARK_POS)
-        .output(OUTPUT_FILE, vsync=2)
+        .output(OUTPUT_FILE, vsync=0)
         .run(overwrite_output=True)
     )
 
