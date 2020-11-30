@@ -4,23 +4,24 @@ from pathlib import Path
 from config import *
 
 def get_video_paths(dirname):
-    paths_sorted = sorted(Path(dirname).iterdir(), key=os.path.getmtime)
-    return map(str, paths_sorted)
+    paths_sorted = sorted((x for x in Path(dirname).iterdir() if not x.is_dir()), key=os.path.getmtime)
+    return list(map(str, paths_sorted))
 
 def create_intro():
-    intro_image = ffmpeg.input(os.path.join(IMAGES_DIR, INTRO_IMAGE), f='image2', loop=1)
-    intro_audio = ffmpeg.input(os.path.join(AUDIO_DIR, INTRO_AUDIO))
+    intro_image = ffmpeg.input(INTRO_IMAGE, f='image2', loop=1)
+    intro_audio = ffmpeg.input(INTRO_AUDIO)
 
     out = ffmpeg.output(intro_image, intro_audio, INTRO_FILE, shortest=None, vcodec='libx264', acodec='aac', preset='medium')
     #print(out.compile())
     out.run(overwrite_output=True)
 
 def join_video():
-    paths = get_video_paths(VIDEO_DIR)
+    paths = get_video_paths(VIDEO_SRC_DIR)
+    paths += get_video_paths(VIDEO_END_DIR)
     streams = [ffmpeg.input(path) for path in paths]
     streams.insert(0, ffmpeg.input(INTRO_FILE))
 
-    overlay_file = ffmpeg.input(os.path.join(IMAGES_DIR, WATERMARK_FILENAME))
+    overlay_file = ffmpeg.input(WATERMARK_FILENAME)
 
     streams_av = []
 
@@ -37,7 +38,9 @@ def join_video():
     )
 
 def main():
-    create_intro()
+    if CREATE_INTRO:
+        create_intro()
+
     join_video()
 
 if __name__ == "__main__":
