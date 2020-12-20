@@ -17,7 +17,13 @@ def create_intro():
 
 def join_video():
     paths = get_video_paths(VIDEO_SRC_DIR)
-    paths += get_video_paths(VIDEO_END_DIR)
+
+    if ADD_ADS_VIDEO:
+        paths += get_video_paths(VIDEO_ADS_DIR)
+    
+    if ADD_END_VIDEO:
+        paths += get_video_paths(VIDEO_END_DIR)
+        
     streams = [ffmpeg.input(path) for path in paths]
     streams.insert(0, ffmpeg.input(INTRO_FILE))
 
