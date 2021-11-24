@@ -4,23 +4,25 @@ from pathlib import Path
 from config import *
 
 def get_video_paths(dirname):
-    paths_sorted = sorted((x for x in Path(dirname).iterdir() if not x.is_dir()), key=os.path.getmtime)
+    paths_sorted = sorted((x for x in Path(dirname).iterdir() if not x.is_dir()))
     return list(map(str, paths_sorted))
 
 def create_intro():
     intro_image = ffmpeg.input(INTRO_IMAGE, f='image2', loop=1)
     intro_audio = ffmpeg.input(INTRO_AUDIO)
 
-    out = ffmpeg.output(intro_image, intro_audio, INTRO_FILE, shortest=None, vcodec='libx264', acodec='aac', preset='medium')
+    out = ffmpeg.output(intro_image, intro_audio, INTRO_FILE, shortest=None, vcodec='libx264', acodec='aac', preset='slow')
     #print(out.compile())
     out.run(overwrite_output=True)
 
 def join_video():
-    paths = get_video_paths(VIDEO_SRC_DIR)
+    paths = []
 
     if ADD_ADS_VIDEO:
         paths += get_video_paths(VIDEO_ADS_DIR)
-    
+
+    paths += get_video_paths(VIDEO_SRC_DIR)
+
     if ADD_END_VIDEO:
         paths += get_video_paths(VIDEO_END_DIR)
         

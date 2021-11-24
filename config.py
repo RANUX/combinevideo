@@ -3,7 +3,7 @@ import os
 VIDEO_DIR = 'video'
 AUDIO_DIR = 'audio'
 IMAGES_DIR = 'images'
-VOLUME_INCREASE = 11
+VOLUME_INCREASE = 15
 
 WATERMARK_FILENAME = os.path.join(IMAGES_DIR, 'docode-watermark.png')
 
